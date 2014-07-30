@@ -1,0 +1,12 @@
+build/
+ext/
+.sencha/
+bootstrap.json
+bootstrap.js
+bootstrap.css
+sass/config.rb
+sass/example/custom.js
+sass/example/render.js
+sass/example/theme.html
+sass/Readme.md
+build.xml
