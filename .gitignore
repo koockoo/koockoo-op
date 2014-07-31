@@ -10,3 +10,8 @@ sass/example/render.js
 sass/example/theme.html
 sass/Readme.md
 build.xml
+/target
+
+*.prefs
+.project
+.classpath
