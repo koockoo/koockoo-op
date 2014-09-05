@@ -1,27 +1,25 @@
 /**
- * The main application class. An instance of this class is created by app.js when it calls
- * Ext.application(). This is the ideal place to handle application launch and initialization
- * details.
+ * The Application class just links up the main controller and our simulated data.
  */
 Ext.define('OP.Application', {
     extend: 'Ext.app.Application',
-    
-    name: 'OP',
 
-    views: [
-        'OP.view.Login'
+    requires: [
+        'Ext.app.bindinspector.*'
     ],
 
     controllers: [
-        'Root',
-        'Login'
+        'Root@OP.controller'
     ],
 
     stores: [
-        // TODO: add stores here
+       'Auth@OP.store'
     ],
-    
-    launch: function () {
-    	Ext.widget('login');
+
+    onBeforeLaunch: function () {
+        // All smoke-and-mirrors with data happens in SimData. This is a fake server that
+        // runs in-browser and intercepts the various Ajax requests a real app would make
+        // to a real server.
+        this.callParent();
     }
 });

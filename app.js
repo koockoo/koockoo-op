@@ -4,14 +4,17 @@
  * Sencha Cmd when upgrading.
  */
 Ext.application({
-    name: 'OP',
+    name: 'Operator',
 
-    extend: 'OP.Application',
+    requires: [
+        //'Ext.app.*',
+        'OP.*'
+    ],
     
-    autoCreateViewport: 'OP.view.main.Main'
-	
+    extend: 'OP.Application'
+
     //-------------------------------------------------------------------------
-    // Most customizations should be made to OP.Application. If you need to
+    // Most customizations should be made to Operator.Application. If you need to
     // customize this file, doing so below this section reduces the likelihood
     // of merge conflicts when upgrading to new versions of Sencha Cmd.
     //-------------------------------------------------------------------------

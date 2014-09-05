@@ -1,15 +1,8 @@
-/**
- * This class is the main view for the application. It is specified in app.js as the
- * "autoCreateViewport" property. That setting automatically applies the "viewport"
- * plugin to promote that instance of this class to the body element.
- *
- * TODO - Replace this content of this view to suite the needs of your application.
- */
 Ext.define('OP.view.main.Main', {
-    extend: 'Ext.container.Container',
+    extend: 'Ext.container.Viewport',
 
     xtype: 'app-main',
-    
+
     controller: 'main',
     viewModel: {
         type: 'main'
@@ -25,14 +18,14 @@ Ext.define('OP.view.main.Main', {
         padding: 10,
         height: 40,
         cls: 'appBanner',
-        html: 'My Company - My Company Motto'
-     },{
-         region: 'south',
-         xtype: 'component',
-         padding: 10,
-         height: 30,
-         html: 'status bar'
-      },{
+        html: 'Operator App'
+    },{
+        region: 'south',
+        xtype: 'component',
+        padding: 10,
+        height: 30,
+        html: 'status bar'
+    },{
         xtype: 'panel',
         collapsible: true,
         collapsed: false,
