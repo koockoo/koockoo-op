@@ -15,5 +15,13 @@ Ext.define('OP.view.main.MainController', {
         if (choice === 'yes') {
             //
         }
+    },
+
+    onClickUserName: function () {
+        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
+    },
+
+    onClickLogout: function () {
+        this.fireViewEvent('logout');
     }
 });

@@ -14,15 +14,7 @@ Ext.define('OP.controller.Root', {
     loadingText: 'Loading...',
 
     onLaunch: function () {
-
-        this.login = new OP.view.login.Login({
-            autoShow: false,
-            listeners: {
-                scope: this,
-                login: 'onLogin'
-            }
-        });
-        this.initServices();
+        this.showLogin();
     },
 
     /** initialize service endpoints */
@@ -56,12 +48,36 @@ Ext.define('OP.controller.Root', {
         this.showUI();
     },
 
+    onLogout: function () {
+        this.viewport.destroy();
+        Ext.getStore('Auth').removeAll();
+        this.showLogin();
+    },
+
+    showLogin: function () {
+        this.login = new OP.view.login.Login({
+            autoShow: false,
+            listeners: {
+                scope: this,
+                login: 'onLogin'
+            }
+        });
+        this.initServices();
+    },
+
     showUI: function () {
+        var store = Ext.getStore('Auth');
         this.viewport = new OP.view.main.Main({
             autoShow: true,
+            listeners: {
+                scope: this,
+                logout: 'onLogout'
+            },
             viewModel: {
                 data: {
-                    name: "OP"
+                    name: "OP",
+                    company: "koockoo",
+                    userName: store.getAt(0).get('operatorRef')
                 }
             }
         });

@@ -13,12 +13,49 @@ Ext.define('OP.view.main.Main', {
     },
 
     items: [{
+        xtype: 'container',
+        id: 'app-header',
         region: 'north',
-        xtype: 'component',
-        padding: 10,
-        height: 40,
-        cls: 'appBanner',
-        html: 'Operator App'
+        height: 52,
+        layout: {
+            type: 'hbox',
+            align: 'middle'
+        },
+
+        items: [{
+            xtype: 'component',
+            id: 'app-header-logo',
+            listeners: {
+                click: 'showBindInspector',
+                element: 'el'
+            }
+        },{
+            xtype: 'component',
+            cls: 'app-header-text',
+            bind: '{company}',
+            flex: 1
+        },{
+            xtype: 'component',
+            id: 'app-header-username',
+            cls: 'app-header-text',
+            bind: '{userName}',
+            listeners: {
+                click: 'onClickUserName',
+                element: 'el'
+            },
+            margin: '0 10 0 0'
+        },{
+            xtype: 'button',
+            text: 'Logout',
+            height: 30,
+            id: 'app-header-logout',
+            listeners: {
+                click: 'onClickLogout',
+                element: 'el'
+            },
+            margin: '0 10 0 0'
+        }]
+
     },{
         region: 'south',
         xtype: 'component',
@@ -40,7 +77,6 @@ Ext.define('OP.view.main.Main', {
         }]
     },{
         region: 'center',
-        padding: 10,
         xtype: 'tabpanel',
         items:[{
             title: 'Tab 1',
