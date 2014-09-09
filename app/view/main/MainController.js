@@ -2,7 +2,8 @@ Ext.define('OP.view.main.MainController', {
     extend: 'Ext.app.ViewController',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'OP.view.chat.Chat'
     ],
 
     alias: 'controller.main',
@@ -13,7 +14,10 @@ Ext.define('OP.view.main.MainController', {
 
     onConfirm: function (choice) {
         if (choice === 'yes') {
-            //
+            var tabs = this.lookupReference('main-tab-panel');
+            var tab = this.chatView();
+            tabs.add(tab);
+            tabs.setActiveTab(tab);
         }
     },
 
@@ -23,5 +27,20 @@ Ext.define('OP.view.main.MainController', {
 
     onClickLogout: function () {
         this.fireViewEvent('logout');
+    },
+
+    chatView: function () {
+        return new OP.view.chat.Chat({
+            autoShow: true,
+            closable: true,
+
+            viewModel: {
+                data: {
+                    title: "Chat #"
+                }
+            }
+        });
     }
+
+
 });
