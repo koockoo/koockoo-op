@@ -13,7 +13,8 @@ Ext.define('OP.Application', {
     ],
 
     stores: [
-       'Auth@OP.store'
+       'Auth@OP.store',
+       'Pending@OP.store'
     ],
 
     onBeforeLaunch: function () {

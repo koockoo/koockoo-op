@@ -16,7 +16,7 @@ Ext.define('OP.view.chat.Chat', {
     controller: 'chat',
 
     bodyPadding: 10,
-    title: 'Chat',
+    bind: '{title}',
 
     layout: {
         type: 'vbox',
@@ -49,7 +49,6 @@ Ext.define('OP.view.chat.Chat', {
         },
         {
             xtype: 'htmleditor',
-            id: 'messagetext',
             flex: 1,
             enableLinks: true,
             enableLists: false,
@@ -61,11 +60,9 @@ Ext.define('OP.view.chat.Chat', {
 //                    enableFont		 : false
         },
         {
-            id: "messagebutttons",
             items: [
                 {
                     xtype: 'button',
-                    id: 'sendbutton',
                     text: 'Send',
                     hidden: false,
                     width: '100%',
@@ -73,7 +70,6 @@ Ext.define('OP.view.chat.Chat', {
                 },
                 {
                     xtype: 'button',
-                    id: 'acceptbutton',
                     text: 'Accept',
                     height: 40,
                     hidden: true,
@@ -81,7 +77,6 @@ Ext.define('OP.view.chat.Chat', {
                 },
                 {
                     xtype: 'button',
-                    id: 'skipbutton',
                     text: 'Skip',
                     height: 40,
                     hidden: true,

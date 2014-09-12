@@ -15,7 +15,7 @@ Ext.define('OP.view.main.MainController', {
     onConfirm: function (choice) {
         if (choice === 'yes') {
             var tabs = this.lookupReference('main-tab-panel');
-            var tab = this.chatView();
+            var tab = this.chatView('New Title');
             tabs.add(tab);
             tabs.setActiveTab(tab);
         }
@@ -29,14 +29,25 @@ Ext.define('OP.view.main.MainController', {
         this.fireViewEvent('logout');
     },
 
-    chatView: function () {
+    
+    onPendingSelect: function(model, selections){
+        var item =  selections[0];
+        var tabs = this.lookupReference('main-tab-panel');
+        var tab = this.chatView(item.get("displayName"));
+        var ps = Ext.getStore("Pending");
+        tabs.add(tab);
+        tabs.setActiveTab(tab);
+        ps.remove(item);
+    },
+
+    chatView: function (title) {
         return new OP.view.chat.Chat({
             autoShow: true,
             closable: true,
 
             viewModel: {
                 data: {
-                    title: "Chat #"
+                    title: title
                 }
             }
         });

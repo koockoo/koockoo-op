@@ -63,18 +63,18 @@ Ext.define('OP.view.main.Main', {
         height: 30,
         html: 'status bar'
     },{
-        xtype: 'panel',
+        region: 'east',
+        xtype: 'pending',
+        reference: 'main-pending',
         collapsible: true,
         collapsed: false,
-        title: 'Pending',
-        region: 'east',
-        html: '<ul><li>This area is commonly used for navigation, for example, using a "tree" component.</li></ul>',
         width: 250,
         split: true,
-        tbar: [{
-            text: 'Button',
-            handler: 'onClickButton'
-        }]
+        selModel: {
+            listeners: {
+                selectionchange: 'onPendingSelect'
+            }
+        }
     },{
         region: 'center',
         xtype: 'tabpanel',
