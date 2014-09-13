@@ -62,3 +62,62 @@ $app-header-use-gradient: true;
 #app-header-username {
     cursor: pointer;
 }
+
+.iconTab {
+  background-image: url("images/mail.png");
+}
+
+.iconTabOpen {
+  background-image: url("images/mail-open.png");
+}
+
+.iconTabUnread {
+  background-image: url("images/mail-unread.gif");
+}
+
+.pending-grid {
+
+  .x-grid-cell-inner {
+    padding-left: 30px;
+  }
+
+  .x-grid-cell {
+    border-radius: 2px;
+    background-color: #BAFFFA;
+    border-color: white;
+    color: #009;
+    height: 40px;
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 10px;
+    background:  linear-gradient(to top, #BAFFFA 0%, #97C0EF 100%);
+
+    /* Grid cells when the mouse cursor is over the row */
+    .unread {
+      background: url(images/mail-unread.gif) no-repeat center left, linear-gradient(to top, #BAFFFA 0%, #5D76EF 100%);
+    }
+
+    /* Grid cells when the mouse cursor is over the row */
+    .pending {
+      background-color: #F7FCFF;
+      background: url(images/mail-unread.gif) no-repeat center left, radial-gradient(ellipse farthest-corner at center, #C9EFFF 0%, #6E7DA6 100%);
+    }
+
+    .inactive {
+      background-color: #F7FCFF;
+      background: url(images/mail.png) no-repeat center left, linear-gradient(to top, #CCCCCC 0%, #666666 100%);
+    }
+
+    /* Grid cells in the selected row */
+    .x-grid-row-selected {
+      border-color: white;
+      background-color: #CCFFCF;
+      box-shadow: 2px 2px 2px #999;
+      background: url(images/mail-open.png) no-repeat center left, linear-gradient(to top, #CCFFCF 0%, #24C96C 100%);
+    }
+  }
+
+  .x-grid-row-over {
+    background: url(images/mail.png) no-repeat center left, linear-gradient(to top, #BAFFFA 0%, #97C0EF 100%);
+  }
+}
