@@ -12,26 +12,15 @@ Ext.define('OP.view.main.MainController', {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
     },
 
-    onConfirm: function (choice) {
-        if (choice === 'yes') {
-            var tabs = this.lookupReference('main-tab-panel');
-            var tab = this.chatView('New Title');
-            tabs.add(tab);
-            tabs.setActiveTab(tab);
-        }
-    },
-
-    onClickUserName: function () {
-        Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
-    },
-
     onClickLogout: function () {
         this.fireViewEvent('logout');
     },
 
     onPendingSelect: function(model, selections){
         var item =  selections[0];
-        this.acceptView(item);
+        if (item) {
+            this.showAcceptView(item);
+        }
     },
 
     chatView: function (title) {
@@ -47,20 +36,24 @@ Ext.define('OP.view.main.MainController', {
         });
     },
 
-    acceptView: function (item) {
-        var win = new OP.view.accept.Accept({
+    showAcceptView: function (item) {
+        this.acceptView = new OP.view.accept.Accept({
+            autoShow: true,
             viewModel: {
                 data: {
                     item: item
                 }
+            },
+            listeners: {
+                scope: this,
+                accept: 'onAccepted'
             }
-        });
 
-        win.show();
+        });
     },
 
     onAccepted: function(item){
-
+        this.acceptView.close();
         var tabs = this.lookupReference('main-tab-panel');
         var tab = this.chatView(item.get("displayName"));
         var ps = Ext.getStore("Pending");

@@ -6,9 +6,9 @@ Ext.define('OP.view.accept.Accept', {
 
     controller: 'accept',
 
-    width: 300,
+    width: 450,
     minHeight: 250,
-    height: 450,
+    height: 300,
     bodyPadding: 10,
     layout: {
         type: 'vbox',
@@ -24,20 +24,26 @@ Ext.define('OP.view.accept.Accept', {
     items: [{
         xtype: 'textfield',
         fieldLabel: 'Name',
+        readOnly: true,
         bind: '{item.displayName}',
         labelWidth: 70
     },{
         xtype: 'textfield',
+        readOnly: true,
         fieldLabel: 'Location',
+        bind: '{item.location}',
         labelWidth: 70
     },{
         xtype: 'textfield',
         fieldLabel: 'Env',
+        bind: '{item.env}',
         labelWidth: 70
     },{
-        xtype: 'textfield',
+        xtype: 'textareafield',
+        readOnly: true,
         fieldLabel: 'Message',
-        labelWidth: 70
+        labelWidth: 70,
+        flex:1
     }],
 
     buttons: [{

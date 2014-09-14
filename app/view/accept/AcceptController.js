@@ -5,5 +5,6 @@ Ext.define('OP.view.accept.AcceptController', {
 
     onAcceptClick: function() {
         var viewModel = this.getViewModel();
+        this.fireViewEvent('accept', viewModel.data.item);
     }
 });

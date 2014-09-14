@@ -6,7 +6,9 @@ Ext.define('OP.model.Thread', {
 
     fields: [
         {name: 'id', type: 'string'},
-        {name: 'displayName', type: 'string'}
+        {name: 'displayName', type: 'string'},
+        {name: 'location', type: 'string'},
+        {name: 'env', type: 'string'}
     ]
 
 
