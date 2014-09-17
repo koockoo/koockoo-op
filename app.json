@@ -109,7 +109,8 @@
     "js": [
         {
             "path": "../shared/js/koockoo-services.js",
-            "includeInBundle": true
+            "includeInBundle": false,
+	    "bootstrap": true
         },
         {
             "path": "app.js",

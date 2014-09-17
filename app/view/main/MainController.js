@@ -16,13 +16,6 @@ Ext.define('OP.view.main.MainController', {
         this.fireViewEvent('logout');
     },
 
-    onPendingSelect: function(model, selections){
-        var item =  selections[0];
-        if (item) {
-            this.showAcceptView(item);
-        }
-    },
-
     chatView: function (title) {
         return new OP.view.chat.Chat({
             autoShow: true,
@@ -63,13 +56,29 @@ Ext.define('OP.view.main.MainController', {
         tabs.setActiveTab(tab);
         ps.remove(item);
 
-        if (currentTab) {
+        if (currentTab && currentTab.id != 'dashboard-tab') {
             currentTab.setIconCls('iconTab');
         }
+    },
+
+    onTabChanged: function(tabs, newTab, oldTab) {
+        var tabs = this.lookupReference('main-tab-panel');
+        Ext.each(tabs.items.items, function(item){
+            if (item) {
+                if (item.id == 'dashboard-tab') return;
+                if (item == newTab) {
+                    item.setIconCls('iconTabOpen');
+                } else {
+                    item.setIconCls('iconTab');
+                }
+            }
+        });
+    },
+
+    onPendingRowClick: function(grid, record, tr, rowIndex, e, eOpts){
+        if (record) {
+            this.showAcceptView(record);
+        }
     }
-
-
-
-
 
 });

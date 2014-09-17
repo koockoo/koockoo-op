@@ -47,7 +47,7 @@ Ext.define('OP.view.accept.Accept', {
     }],
 
     buttons: [{
-        text: 'Accept',
+        text: 'Start Chat',
         listeners: {
             // Call is routed to our ViewController (Ticket.view.user.UserController):
             click: 'onAcceptClick'

@@ -1,0 +1,46 @@
+.pending-grid .x-grid-cell-inner {
+	padding-left: 30px;
+}
+
+.pending-grid .x-grid-cell {
+	border-radius: 2px;
+	background-color: #BAFFFA;
+	border-color: white;
+	color: #009;
+	height: 40px;
+    font-size: 12px;
+    font-weight: bold;
+    padding-top: 10px;
+	background: linear-gradient(to bottom, #bac8fa 0%, #6482ef 100%);
+}
+
+ /*Grid cells when the mouse cursor is over the row*/
+.pending-grid .x-grid-item-over .x-grid-cell {
+	background-color: #BAFFFA;
+	background: linear-gradient(to top, #BAFFFA 0%, #97C0EF 100%);
+}
+
+/* Grid cells when the mouse cursor is over the row */
+/*.pending-grid .unread .x-grid-cell  {*/
+	/*background-color: #BAFFFA;*/
+	/*background: linear-gradient(to top, #BAFFFA 0%, #5D76EF 100%);*/
+/*}*/
+
+/* Grid cells when the mouse cursor is over the row */
+/*.pending-grid .x-grid-cell  {*/
+	/*background-color: #F7FCFF;*/
+	/*background: radial-gradient(to top, #C9EFFF 0%, #6E7DA6 100%);*/
+/*}*/
+
+
+ /*Grid cells in the selected row*/
+.pending-grid .x-grid-item-selected .x-grid-cell {
+	border-color: white;
+	background-color: #CCFFCF;
+	box-shadow: 2px 2px 2px #999;
+	background: linear-gradient(to top, #CCFFCF 0%, #24C96C 100%);
+}
+
+/*tr.x-grid-row.x-grid-row-over  td{*/
+    /*background-color: yellow;*/
+/*}*/

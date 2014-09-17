@@ -70,17 +70,21 @@ Ext.define('OP.view.main.Main', {
         collapsed: false,
         width: 250,
         split: true,
-        selModel: {
-            listeners: {
-                selectionchange: 'onPendingSelect'
-            }
+        listeners: {
+            rowclick: 'onPendingRowClick'
         }
     },{
         region: 'center',
         xtype: 'tabpanel',
         reference: 'main-tab-panel',
+        listeners: {
+            tabchange: 'onTabChanged'
+        },
+
         items:[{
             title: 'Dashboard',
+            id: 'dashboard-tab',
+            iconCls: 'iconTabDashboard',
             html: '<h2>Operator Dashboard</h2>',
             closable: false
         }]
