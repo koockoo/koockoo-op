@@ -19,8 +19,11 @@
 
     /**
      * The name of the theme for this application.
+     * "theme": "ext-theme-classic",
+     * "theme": "ext-theme-crisp-touch,
+     * "theme": "ext-theme-neptune-touch",
      */
-    "theme": "ext-theme-classic",
+    "theme": "ext-theme-neptune-touch",
 
     /**
      * The list of required packages (with optional versions; default is "latest").
