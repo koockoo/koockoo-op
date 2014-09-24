@@ -2,7 +2,7 @@ Ext.define('OP.view.chat.Chat', {
     extend: 'Ext.panel.Panel',
 
     requires: [
-        'OP.plugin.PreviewPlugin',
+        'Ext.ux.PreviewPlugin',
         'Ext.form.Panel',
         'Ext.button.Button',
         'Ext.form.field.Text',
@@ -40,15 +40,16 @@ Ext.define('OP.view.chat.Chat', {
 
             xtype: 'grid',
             flex: 4,
-            autoScroll: true,
             border: false,
             hideHeaders: true,
             cls: 'feed-grid',
-            store : 'Message',
-
+            bind: {
+                store: '{messages}'
+            },
             viewConfig: {
                 stripeRows: false,
                 enableTextSelection: true,
+                autoScroll: true,
                 plugins: [
                     {
                         pluginId: 'preview',
@@ -74,28 +75,36 @@ Ext.define('OP.view.chat.Chat', {
                 }
             ]
         },
-
         {
-            xtype: 'htmleditor',
-            flex: 1,
-            enableLinks: true,
-            enableLists: false,
-            enableSourceEdit: false,
-            enableAlignments: false,
-            enableColors: true,
-            enableFontSize: false,
-            enableFormat: true
-//                    enableFont		 : false
-        },
-        {
+            xtype: 'form',
+            layout: 'fit',
+            border: true,
             items: [
                 {
-                    xtype: 'button',
+                    xtype: 'htmleditor',
+                    reference: 'chat-textarea',
+                    flex: 1,
+                    enableLinks: true,
+                    enableLists: false,
+                    enableSourceEdit: false,
+                    enableAlignments: false,
+                    enableColors: true,
+                    enableFontSize: false,
+                    enableFormat: true
+                    //                    enableFont		 : false
+                }
+            ],
+            buttons: [
+                {
                     text: 'Send',
-                    width: '100%',
-                    height: 40
+                    width: 150,
+                    height: 30,
+                    listeners: {
+                        click: 'onSendClick'
+                    }
                 }
             ]
+
         }
     ],
 

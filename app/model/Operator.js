@@ -1,7 +1,7 @@
 /**
  * This class is the base class for all entities in the application.
  */
-Ext.define('OP.model.Thread', {
+Ext.define('OP.model.Operator', {
     extend: 'Ext.data.Model',
 
     fields: [

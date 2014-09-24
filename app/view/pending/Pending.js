@@ -1,6 +1,7 @@
 Ext.define('OP.view.PendingSessions', {
     extend : 'Ext.grid.Panel',
     cls: 'pending-grid',
+    controller: 'pending',
 
     hideHeaders: true,
     scroll: 'vertical',
@@ -13,7 +14,10 @@ Ext.define('OP.view.PendingSessions', {
 
     columns : [ {
         header : 'Name',
-        dataIndex : 'displayName',
+        dataIndex : 'guest',
+        renderer : function(value, meta, record) {
+            return value['displayName'];
+        },
         flex : 1
     }]
  });

@@ -24,6 +24,17 @@ Ext.define('OP.view.main.MainController', {
             viewModel: {
                 data: {
                     title: title
+                },
+                stores: {
+                    messages: {
+                        model: 'Message',
+                        data : [
+                            {displayName: 'Ed',    id: 'Spencer', timestamp:'"2012-01-03 5:43:21 PM"', message: 'Opera dsafds fsdfsafsadfsadfsdf'},
+                            {displayName: 'Tommy', id: 'Maintz', timestamp:'"2012-01-03 5:43:21 PM"', message: 'Mozila sfsadfsafd safdsadf sadfsa fdsad fsa dfsa df safsa f'},
+                            {displayName: 'Aaron', id: 'Conran', timestamp:'"2014-09-17 00:05:21 AM"', message: 'Android fdasfsadfrrdaewsdf safafsedfascd dsafd dsaf ewa fsadfs dsaf '},
+                            {displayName: 'Jamie', id: 'Avins', timestamp:'"2012-01-03 5:43:21 AM"', message: 'IE dsafsdf saf sdf fretyt yjuy ujjmnbn bnvc fds vcfdsvcfds gtrjh m hfn'}
+                        ]
+                    }
                 }
             }
         });
@@ -34,12 +45,12 @@ Ext.define('OP.view.main.MainController', {
             autoShow: true,
             viewModel: {
                 data: {
-                    item: item
+                    item: item.get('guest')
                 }
             },
             listeners: {
                 scope: this,
-                accept: 'onAccepted'
+                accept: function(){this.onAccepted(item);}
             }
 
         });
@@ -48,7 +59,7 @@ Ext.define('OP.view.main.MainController', {
     onAccepted: function(item){
         this.acceptView.close();
         var tabs = this.lookupReference('main-tab-panel');
-        var tab = this.chatView(item.get("displayName"));
+        var tab = this.chatView(item.get('guest')["displayName"]);
         var ps = Ext.getStore("Pending");
         var currentTab = tabs.getActiveTab();
 
