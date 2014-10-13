@@ -39,6 +39,7 @@ Ext.define('OP.view.chat.Chat', {
         {
 
             xtype: 'grid',
+            reference: 'chat-grid',
             flex: 4,
             border: false,
             hideHeaders: true,

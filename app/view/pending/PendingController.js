@@ -20,7 +20,7 @@ Ext.define('OP.view.pending.PendingController', {
             id:'PendingPolling',
             interval:30000,
             type:'polling',
-            url : koockoo.service.chatroom.pending.url,
+            url : koockoo.service.chatroom.pending.url+'?token='+auth.get('id'),
             listeners: {
                 data: function(provider, event) {
                     console.log("response received for pending");
