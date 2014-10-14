@@ -7,8 +7,8 @@ Ext.define('OP.model.Operator', {
     fields: [
         {name: 'id', type: 'string'},
         {name: 'displayName', type: 'string'},
-        {name: 'location', type: 'string'},
-        {name: 'env', type: 'string'}
+        {name: 'email', type: 'string'},
+        {name: 'topicRef', type: 'string'}
     ]
 
 

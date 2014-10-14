@@ -6,7 +6,15 @@ Ext.define('OP.model.Auth', {
 
     fields: [
         {name: 'id', type: 'string'},
-        {name: 'operatorRef', type: 'string'}
+        {name: 'topicRef', type: 'string'}
+    ],
+
+    associations: [
+        {
+            model: 'Operator',
+            type: 'hasOne',
+            autoLoad: false
+        }
     ],
 
     schema: {

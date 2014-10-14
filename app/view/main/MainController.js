@@ -50,22 +50,36 @@ Ext.define('OP.view.main.MainController', {
             },
             listeners: {
                 scope: this,
-                accept: function(){this.onAccepted(item);}
+                accept: function(){this.onAccept(item);}
             }
 
         });
     },
 
-    onAccepted: function(item){
+    onAccept: function(item) {
         this.acceptView.close();
+        var viewModel = this.getViewModel();
+        var oper = viewModel.data.operator;
+        Ext.Ajax.request({
+            url: koockoo.service.chatroom.accept.url,
+            method: koockoo.service.chatroom.accept.type,
+            params: {roomId: item.id, operatorId: oper.id},
+            scope: this,
+            success: this.onAccepted,
+            original: item
+        });
+    },
+
+    onAccepted: function(response, item){
+        var chatRoom = item.original;
         var tabs = this.lookupReference('main-tab-panel');
-        var tab = this.chatView(item.get('guest')["displayName"]);
+        var tab = this.chatView(chatRoom.get('guest')['displayName']);
         var ps = Ext.getStore("Pending");
         var currentTab = tabs.getActiveTab();
 
         tabs.add(tab);
         tabs.setActiveTab(tab);
-        ps.remove(item);
+        ps.remove(chatRoom);
 
         if (currentTab && currentTab.id != 'dashboard-tab') {
             currentTab.setIconCls('iconTab');

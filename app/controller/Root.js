@@ -77,7 +77,9 @@ Ext.define('OP.controller.Root', {
                 data: {
                     name: "OP",
                     company: "koockoo",
-                    userName: store.getAt(0).get('operatorRef')
+                    userName: store.getAt(0).get('operatorRef'),
+                    auth: store.getAt(0),
+                    operator: store.getAt(0).get('operator')
                 }
             }
         });

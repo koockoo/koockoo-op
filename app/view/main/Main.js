@@ -38,7 +38,7 @@ Ext.define('OP.view.main.Main', {
             xtype: 'component',
             id: 'app-header-username',
             cls: 'app-header-text',
-            bind: '{userName}',
+            bind: '{operator.displayName}',
             listeners: {
                 click: 'onClickUserName',
                 element: 'el'

@@ -144,7 +144,7 @@ var koockoo = koockoo || {};
             pending:    {url: url+"/pending", type:'GET'},
             open:    {url: url+"/open", type:'GET'},
             close:    {url: url+"/close", type:'GET'},
-            accept:    {url: url+"/accept", type:'GET'}
+            accept:    {url: url+"/accept", type:'POST'}
         };
 	};
 
