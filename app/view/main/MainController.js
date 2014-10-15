@@ -56,22 +56,22 @@ Ext.define('OP.view.main.MainController', {
         });
     },
 
-    onAccept: function(item) {
+    onAccept: function(chatRoom) {
         this.acceptView.close();
         var viewModel = this.getViewModel();
         var oper = viewModel.data.operator;
         Ext.Ajax.request({
             url: koockoo.service.chatroom.accept.url,
             method: koockoo.service.chatroom.accept.type,
-            params: {roomId: item.id, operatorId: oper.id},
+            params: {roomId: chatRoom.id, operatorId: oper.id},
             scope: this,
             success: this.onAccepted,
-            original: item
+            original: chatRoom
         });
     },
 
-    onAccepted: function(response, item){
-        var chatRoom = item.original;
+    onAccepted: function(response, data){
+        var chatRoom = data.original;
         var tabs = this.lookupReference('main-tab-panel');
         var tab = this.chatView(chatRoom.get('guest')['displayName']);
         var ps = Ext.getStore("Pending");
