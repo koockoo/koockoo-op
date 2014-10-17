@@ -14,6 +14,7 @@ Ext.define('OP.controller.Root', {
     loadingText: 'Loading...',
 
     onLaunch: function () {
+        this.initServices();
         this.showLogin();
     },
 
@@ -29,7 +30,6 @@ Ext.define('OP.controller.Root', {
 
     onServiceInitialized: function (self) {
         console.log("service enpoints are initialized");
-        self.login.show();
     },
 
     onServiceInitializedFail: function () {
@@ -56,13 +56,12 @@ Ext.define('OP.controller.Root', {
 
     showLogin: function () {
         this.login = new OP.view.login.Login({
-            autoShow: false,
+            autoShow: true,
             listeners: {
                 scope: this,
                 login: 'onLogin'
             }
         });
-        this.initServices();
     },
 
     showUI: function () {
@@ -77,7 +76,6 @@ Ext.define('OP.controller.Root', {
                 data: {
                     name: "OP",
                     company: "koockoo",
-                    userName: store.getAt(0).get('operatorRef'),
                     auth: store.getAt(0),
                     operator: store.getAt(0).get('operator')
                 }

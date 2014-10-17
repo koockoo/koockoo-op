@@ -55,7 +55,7 @@ Ext.define('OP.view.chat.Chat', {
                     {
                         pluginId: 'preview',
                         ptype: 'preview',
-                        bodyField: 'message',
+                        bodyField: 'text',
                         expanded: true
                     }
                 ]
@@ -64,7 +64,7 @@ Ext.define('OP.view.chat.Chat', {
             columns: [
                 {
                     text: 'Author',
-                    dataIndex: 'displayName',
+                    dataIndex: 'authorName',
                     renderer: this.formatTitle,
                     flex: 1
                 },

@@ -7,6 +7,7 @@ Ext.define('OP.view.main.MainController', {
     ],
 
     alias: 'controller.main',
+    polling: false,
 
     onClickButton: function () {
         Ext.Msg.confirm('Confirm', 'Are you sure?', 'onConfirm', this);
@@ -16,25 +17,28 @@ Ext.define('OP.view.main.MainController', {
         this.fireViewEvent('logout');
     },
 
-    chatView: function (title) {
+    chatView: function (chatroom) {
         return new OP.view.chat.Chat({
             autoShow: true,
             closable: true,
             iconCls: 'iconTabOpen',
             viewModel: {
                 data: {
-                    title: title
+                    chatroom: chatroom,
+                    title: chatroom.get('guest')['displayName']
                 },
+
                 stores: {
+                    all: Ext.getStore("Message"),
                     messages: {
-                        model: 'Message',
-                        data : [
-                            {displayName: 'Ed',    id: 'Spencer', timestamp:'"2012-01-03 5:43:21 PM"', message: 'Opera dsafds fsdfsafsadfsadfsdf'},
-                            {displayName: 'Tommy', id: 'Maintz', timestamp:'"2012-01-03 5:43:21 PM"', message: 'Mozila sfsadfsafd safdsadf sadfsa fdsad fsa dfsa df safsa f'},
-                            {displayName: 'Aaron', id: 'Conran', timestamp:'"2014-09-17 00:05:21 AM"', message: 'Android fdasfsadfrrdaewsdf safafsedfascd dsafd dsaf ewa fsadfs dsaf '},
-                            {displayName: 'Jamie', id: 'Avins', timestamp:'"2012-01-03 5:43:21 AM"', message: 'IE dsafsdf saf sdf fretyt yjuy ujjmnbn bnvc fds vcfdsvcfds gtrjh m hfn'}
-                        ]
+                        source: Ext.getStore("Message"),
+                        filters: [{
+                            property: 'chatRoomId',
+                            value: chatroom.get("id"),
+                            operator: '='
+                        }]
                     }
+
                 }
             }
         });
@@ -73,7 +77,7 @@ Ext.define('OP.view.main.MainController', {
     onAccepted: function(response, data){
         var chatRoom = data.original;
         var tabs = this.lookupReference('main-tab-panel');
-        var tab = this.chatView(chatRoom.get('guest')['displayName']);
+        var tab = this.chatView(chatRoom);
         var ps = Ext.getStore("Pending");
         var currentTab = tabs.getActiveTab();
 
@@ -83,6 +87,10 @@ Ext.define('OP.view.main.MainController', {
 
         if (currentTab && currentTab.id != 'dashboard-tab') {
             currentTab.setIconCls('iconTab');
+        }
+        if (this.polling === false) {
+            this.startPolling();
+            this.polling = true;
         }
     },
 
@@ -104,6 +112,54 @@ Ext.define('OP.view.main.MainController', {
         if (record) {
             this.showAcceptView(record);
         }
+    },
+
+
+    getUrl: function() {
+        var oper = this.getViewModel().data.operator;
+        var msStore = Ext.getStore('Message');
+
+        var lastId = null;
+        if  (msStore.count() > 0 ) {
+            msStore.each(function(message, idx){
+                if (message.get("authorRef") != oper.id) {
+                    lastId = message.id;
+                }
+            });
+        }
+
+        var url = "";
+        if (lastId != null) {
+            url = koockoo.service.message.readByOperator.url;
+            url = Ext.String.format(url, oper.id, lastId);
+        } else {
+            url = koockoo.service.message.readAllByOperator.url;
+            url = Ext.String.format(url, oper.id);
+        }
+        console.log("start polling messages "+ url);
+        return url;
+    },
+
+    startPolling: function () {
+        var me = this;
+        var messagePoll = new Ext.direct.PollingProvider({
+            id:'MessagePolling',
+            interval:30000,
+            type:'polling',
+            url : me.getUrl(),
+            listeners: {
+                data: function(provider, event) {
+                    console.log("response received for messages");
+                    var psStore = Ext.getStore('Message');
+                    psStore.loadRawData(event.data, true);
+                },
+                beforepoll: function(provider, eOpts) {
+                    provider.url = me.getUrl();
+                }
+            }
+        });
+        Ext.direct.Manager.addProvider(messagePoll);
     }
+
 
 });
