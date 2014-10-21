@@ -18,7 +18,8 @@ Ext.define('OP.view.main.MainController', {
     },
 
     chatView: function (chatroom) {
-        return new OP.view.chat.Chat({
+        var self = this;
+        var me = new OP.view.chat.Chat({
             autoShow: true,
             closable: true,
             iconCls: 'iconTabOpen',
@@ -29,23 +30,25 @@ Ext.define('OP.view.main.MainController', {
                 },
 
                 stores: {
-                    all: Ext.getStore("Message"),
                     messages: {
                         source: Ext.getStore("Message"),
-                        filters: [{
-                            property: 'chatRoomId',
-                            value: chatroom.get("id"),
-                            operator: '='
-                        }]
+                        filters: [
+                            {
+                                property: 'chatRoomId',
+                                value: chatroom.get("id"),
+                                operator: '='
+                            }
+                        ]
                     }
-
                 }
             }
         });
+        return me;
     },
 
     showAcceptView: function (item) {
-        this.acceptView = new OP.view.accept.Accept({
+        var me = this;
+        me.acceptView = new OP.view.accept.Accept({
             autoShow: true,
             viewModel: {
                 data: {
@@ -53,14 +56,16 @@ Ext.define('OP.view.main.MainController', {
                 }
             },
             listeners: {
-                scope: this,
-                accept: function(){this.onAccept(item);}
+                scope: me,
+                accept: function () {
+                    me.onAccept(item);
+                }
             }
 
         });
     },
 
-    onAccept: function(chatRoom) {
+    onAccept: function (chatRoom) {
         this.acceptView.close();
         var viewModel = this.getViewModel();
         var oper = viewModel.data.operator;
@@ -74,7 +79,7 @@ Ext.define('OP.view.main.MainController', {
         });
     },
 
-    onAccepted: function(response, data){
+    onAccepted: function (response, data) {
         var chatRoom = data.original;
         var tabs = this.lookupReference('main-tab-panel');
         var tab = this.chatView(chatRoom);
@@ -94,34 +99,30 @@ Ext.define('OP.view.main.MainController', {
         }
     },
 
-    onTabChanged: function(tabs, newTab, oldTab) {
-        var tabs = this.lookupReference('main-tab-panel');
-        Ext.each(tabs.items.items, function(item){
-            if (item) {
-                if (item.id == 'dashboard-tab') return;
-                if (item == newTab) {
-                    item.setIconCls('iconTabOpen');
-                } else {
-                    item.setIconCls('iconTab');
-                }
-            }
-        });
+    onTabChanged: function (tabs, newTab, oldTab) {
+
+        if (newTab.id != 'dashboard-tab') {
+            newTab.setIconCls('iconTabOpen');
+        }
+
+        if (oldTab.id != 'dashboard-tab') {
+            oldTab.setIconCls('iconTab');
+        }
     },
 
-    onPendingRowClick: function(grid, record, tr, rowIndex, e, eOpts){
+    onPendingRowClick: function (grid, record, tr, rowIndex, e, eOpts) {
         if (record) {
             this.showAcceptView(record);
         }
     },
 
-
-    getUrl: function() {
+    getUrl: function () {
         var oper = this.getViewModel().data.operator;
         var msStore = Ext.getStore('Message');
 
         var lastId = null;
-        if  (msStore.count() > 0 ) {
-            msStore.each(function(message, idx){
+        if (msStore.count() > 0) {
+            msStore.each(function (message, idx) {
                 if (message.get("authorRef") != oper.id) {
                     lastId = message.id;
                 }
@@ -136,30 +137,58 @@ Ext.define('OP.view.main.MainController', {
             url = koockoo.service.message.readAllByOperator.url;
             url = Ext.String.format(url, oper.id);
         }
-        console.log("start polling messages "+ url);
+        console.log("start polling messages " + url);
         return url;
     },
 
     startPolling: function () {
         var me = this;
         var messagePoll = new Ext.direct.PollingProvider({
-            id:'MessagePolling',
-            interval:30000,
-            type:'polling',
-            url : me.getUrl(),
+            id: 'MessagePolling',
+            interval: 30000,
+            type: 'polling',
+            url: me.getUrl(),
             listeners: {
-                data: function(provider, event) {
-                    console.log("response received for messages");
-                    var psStore = Ext.getStore('Message');
-                    psStore.loadRawData(event.data, true);
-                },
-                beforepoll: function(provider, eOpts) {
+                scope: me,
+                data: me.onReceievMessages,
+                beforepoll: function (provider, eOpts) {
                     provider.url = me.getUrl();
                 }
             }
         });
         Ext.direct.Manager.addProvider(messagePoll);
-    }
+    },
 
+    onReceievMessages: function(provider, event) {
+        console.log("response received for messages");
+        var psStore = Ext.getStore('Message');
+        var result  = psStore.getProxy().getReader().read(event.data);
+        var records = result.getRecords();
+        if (result.getSuccess()) {
+            console.log("total: " + result.getTotal());
+            var rooms = {};
+            Ext.each(records, function (message) {
+                psStore.add(message);
+                var roomId = message.get("chatRoomId");
+                if (rooms[roomId] == undefined) {
+                    rooms[roomId] = 0;
+                }
+                rooms[roomId] += 1;
+            });
+            this.markTabsUnread(rooms);
+        }
+    },
+
+    markTabsUnread: function(rooms) {
+        var tabs = this.lookupReference('main-tab-panel');
+        Ext.each(tabs.items.items, function (tab) {
+            if (tab != tabs.getActiveTab() && tab.id !='dashboard-tab') {
+                var roomId = tab.viewModel.data.chatroom.id;
+                if (rooms[roomId] != undefined && rooms[roomId] != null) {
+                    tab.setIconCls('iconTabUnread');
+                }
+            }
+        });
+    }
 
 });

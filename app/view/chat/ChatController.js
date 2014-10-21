@@ -36,7 +36,7 @@ Ext.define('OP.view.chat.ChatController', {
         Ext.Ajax.request({
             url: url,
             method: koockoo.service.message.postByOperator.type,
-            data: message.get("text"),
+            params: {text: message.get("text")},
             scope: this,
             success: this.onMessagePosted,
             original: message
@@ -44,10 +44,13 @@ Ext.define('OP.view.chat.ChatController', {
     },
 
     onMessagePosted: function(response, opts){
-        var message = opts.original;
-        var responseMessage = Ext.decode(response.responseText);
-        message.set("id", responseMessage.id);
-        message.set("timestamp", responseMessage.timestamp);
+        var original = opts.original;
+        var resp = Ext.decode(response.responseText);
+        var updated = new OP.model.Message(resp.data);
+        var msStore = Ext.getStore('Message');
+        var idx = msStore.indexOf(original);
+        msStore.removeAt(idx);
+        msStore.insert(idx, updated);
     },
 
     createMessage: function (operator, text, roomId) {
