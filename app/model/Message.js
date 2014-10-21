@@ -4,6 +4,6 @@
 Ext.define('OP.model.Message', {
     extend: 'Ext.data.Model',
 
-    fields : ['id', { name: 'timestamp', type: 'date' }, 'authorName',  'text', 'chatRoomId', 'authorRef', 'authorType', 'utcDateTime']
+    fields : ['id', 'authorName',  'text', 'chatRoomId', 'authorRef', 'authorType', 'utcDateTime']
 
 });
