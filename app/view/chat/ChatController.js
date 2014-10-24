@@ -10,6 +10,14 @@ Ext.define('OP.view.chat.ChatController', {
         this.callParent(arguments);
     },
 
+    scroll: function () {
+        // scroll to the bottom
+        var ms = this.getViewModel().getStore('messages');
+        var grid = this.lookupReference('chat-grid');
+        grid.getView().focusRow(ms.count() - 1);
+        grid.getEl().down('.x-grid-view').scroll('bottom', 200, true);
+    },
+
     onSendClick: function () {
         var ms = this.getViewModel().getStore('messages');
         var chatroom = this.getViewModel().data.chatroom;

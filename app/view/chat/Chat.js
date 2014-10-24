@@ -65,7 +65,9 @@ Ext.define('OP.view.chat.Chat', {
                 {
                     text: 'Author',
                     dataIndex: 'authorName',
-                    renderer: this.formatTitle,
+                    renderer: function (value, p, record) {
+                        return Ext.String.format('<span class="author">{0}</span>', value || "|_|");
+                    },
                     flex: 1
                 },
                 {
@@ -80,7 +82,6 @@ Ext.define('OP.view.chat.Chat', {
                         if (notime === d.getTime()) {
                             return Ext.Date.format(date, 'H:i');
                         }
-
                         return Ext.Date.format(date, 'Y/m/d H:i');
                     },
                     width: 200
@@ -118,34 +119,6 @@ Ext.define('OP.view.chat.Chat', {
             ]
 
         }
-    ],
+    ]
 
-    /**
-     * Title renderer
-     * @private
-     */
-    formatTitle: function (value, p, record) {
-        return Ext.String.format('<span class="author">{0}</span>', value || "Unknown");
-    },
-
-    /**
-     * Date renderer
-     * @private
-     */
-    formatDate: function (date) {
-
-        var now = new Date();
-        var d = Ext.Date.clearTime(now, true);
-        var notime = Ext.Date.clearTime(date, true).getTime();
-
-        if (notime === d.getTime()) {
-            return 'Today ' + Ext.Date.format(date, 'g:i a');
-        }
-
-        d = Ext.Date.add(d, 'd', -6);
-        if (d.getTime() <= notime) {
-            return Ext.Date.format(date, 'D g:i a');
-        }
-        return Ext.Date.format(date, 'Y/m/d g:i a');
-    }
 });

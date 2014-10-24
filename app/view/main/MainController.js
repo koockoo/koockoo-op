@@ -103,6 +103,7 @@ Ext.define('OP.view.main.MainController', {
 
         if (newTab.id != 'dashboard-tab') {
             newTab.setIconCls('iconTabOpen');
+            newTab.controller.scroll();
         }
 
         if (oldTab.id != 'dashboard-tab') {
@@ -150,7 +151,7 @@ Ext.define('OP.view.main.MainController', {
             url: me.getUrl(),
             listeners: {
                 scope: me,
-                data: me.onReceievMessages,
+                data: me.onReceiveMessages,
                 beforepoll: function (provider, eOpts) {
                     provider.url = me.getUrl();
                 }
@@ -159,7 +160,7 @@ Ext.define('OP.view.main.MainController', {
         Ext.direct.Manager.addProvider(messagePoll);
     },
 
-    onReceievMessages: function(provider, event) {
+    onReceiveMessages: function(provider, event) {
         console.log("response received for messages");
         var psStore = Ext.getStore('Message');
         var result  = psStore.getProxy().getReader().read(event.data);
@@ -187,6 +188,8 @@ Ext.define('OP.view.main.MainController', {
                 if (rooms[roomId] != undefined && rooms[roomId] != null) {
                     tab.setIconCls('iconTabUnread');
                 }
+            } else if (tab == tabs.getActiveTab()){
+                tab.controller.scroll();
             }
         });
     }
