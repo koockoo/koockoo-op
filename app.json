@@ -35,8 +35,10 @@
      *      ]
      */
     "requires": [
+        "ext-locale"
     ],
 
+    "locale": "ru",
     /**
      * Sass configuration properties.
      */
