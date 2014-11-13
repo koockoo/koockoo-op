@@ -14,8 +14,9 @@ Ext.define('OP.controller.Root', {
     loadingText: 'Loading...',
 
     onLaunch: function () {
+        this.isMain = false;
         this.initServices();
-        this.showLogin();
+        this.reloadWithLocale();
     },
 
     /** initialize service endpoints */
@@ -55,22 +56,26 @@ Ext.define('OP.controller.Root', {
     },
 
     showLogin: function () {
+        this.isMain = false;
         this.login = new OP.view.login.Login({
             autoShow: true,
             listeners: {
                 scope: this,
-                login: 'onLogin'
+                login: 'onLogin',
+                localeChange: 'onLocaleChange'
             }
         });
     },
 
     showUI: function () {
+        this.isMain = true;
         var store = Ext.getStore('Auth');
         this.viewport = new OP.view.main.Main({
             autoShow: true,
             listeners: {
                 scope: this,
-                logout: 'onLogout'
+                logout: 'onLogout',
+                localeChange: 'onLocaleChange'
             },
             viewModel: {
                 data: {
@@ -81,5 +86,29 @@ Ext.define('OP.controller.Root', {
                 }
             }
         });
+    },
+
+    onLocaleChange: function() {
+        console.log("reload login screen with new lang");
+        this.reloadWithLocale();
+    },
+
+    reloadWithLocale: function () {
+        var url = Ext.util.Format.format("packages/locale/locale-{0}.js", koockoo.userLocale);
+        Ext.Loader.loadScript({url: url, onLoad: this.onLocaleLoadSuccess, scope: this});
+    },
+
+    onLocaleLoadSuccess: function () {
+        koockoo.locale[koockoo.userLocale].reload();
+        if (this.isMain) {
+            this.viewport.destroy();
+            this.showUI();
+        } else {
+            if (this.login) {
+                this.login.destroy();
+            }
+            this.showLogin();
+        }
+
     }
 });

@@ -38,7 +38,6 @@
         "ext-locale"
     ],
 
-    "locale": "ru",
     /**
      * Sass configuration properties.
      */
@@ -115,7 +114,22 @@
         {
             "path": "../shared/js/koockoo-services.js",
             "includeInBundle": false,
-	    "bootstrap": true
+     	    "bootstrap": true
+        },
+        {
+            "path": "../shared/js/locale.js",
+            "includeInBundle": false,
+            "bootstrap": true
+        },
+        {
+            "path": "packages/locale/locale-ru.js",
+            "includeInBundle": false,
+            "bootstrap": true
+        },
+        {
+            "path": "packages/locale/locale-en.js",
+            "includeInBundle": false,
+            "bootstrap": true
         },
         {
             "path": "app.js",

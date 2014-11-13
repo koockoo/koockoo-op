@@ -1,6 +1,5 @@
-var lang = localStorage ? (localStorage.getItem('user-lang') || 'en') : 'en';
-var file = 'translations/' + lang + '.js';
-var extjsFile = 'ext/locale/ext-lang-' + lang + '.js';
-
-document.write('<script type="text/javascript" src="' + file + '"></script>');
-document.write('<script type="text/javascript" src="' + extjsFile + '"></script>');
+var koockoo = koockoo || {};
+(function(){
+    koockoo.userLocale = localStorage ? (localStorage.getItem('user-locale') || 'us') : 'us';
+    console.log("detected user locale:"+koockoo.userLocale);
+})();

@@ -74,7 +74,12 @@ Ext.define('OP.view.login.Login', {
             },
 
             buttons: [
-                {xtype: 'lang'},
+                {
+                    xtype: 'lang',
+                    listeners: {
+                        localeChange: 'onLocaleChange'
+                    }
+                },
                 "->",
                 {
                     text: me.submitLabel,

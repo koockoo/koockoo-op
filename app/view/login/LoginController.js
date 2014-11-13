@@ -45,5 +45,10 @@ Ext.define('OP.view.login.LoginController', {
     onLoginSuccess: function() {
         Ext.getBody().unmask();
         this.fireViewEvent('login');
+    },
+
+    onLocaleChange: function() {
+        this.fireViewEvent('localeChange');
     }
+
 });

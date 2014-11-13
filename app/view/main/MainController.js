@@ -192,6 +192,10 @@ Ext.define('OP.view.main.MainController', {
                 tab.controller.scroll();
             }
         });
+    },
+
+    onLocaleChange: function() {
+        this.fireViewEvent('localeChange');
     }
 
 });

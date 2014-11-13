@@ -4,8 +4,19 @@ Ext.define('OP.view.lang.LangController', {
     alias: 'controller.lang',
 
     onLangChange: function (cycle, activeItem) {
-        console.log(activeItem.locale);
-        var lang = 'en';
-        this.fireViewEvent('langChange', lang);
+        var newLocale = activeItem.locale;
+        console.log("new locale:" + newLocale);
+        if (koockoo.userLocale != newLocale) {
+            koockoo.userLocale = newLocale;
+            if (localStorage) {
+                console.log("locale persisted:" + newLocale);
+                localStorage.setItem("user-locale", newLocale);
+            }
+            this.fireViewEvent('localeChange');
+        }
+    },
+
+    getLocale: function () {
+        return koockoo.userLocale ? koockoo.userLocale : 'en';
     }
 });

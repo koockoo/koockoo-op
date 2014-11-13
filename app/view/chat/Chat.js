@@ -15,6 +15,10 @@ Ext.define('OP.view.chat.Chat', {
     viewModel: 'chat',
     controller: 'chat',
 
+    columnAuthor: 'Author',
+    columnDate: 'Date',
+    buttonSend: 'Send',
+
     bodyPadding: 10,
     bind: '{title}',
 
@@ -35,90 +39,97 @@ Ext.define('OP.view.chat.Chat', {
         }
     ],
 
-    items: [
-        {
-
-            xtype: 'grid',
-            reference: 'chat-grid',
-            flex: 4,
-            border: false,
-            hideHeaders: true,
-            cls: 'feed-grid',
-            bind: {
-                store: '{messages}'
-            },
-            viewConfig: {
-                stripeRows: false,
-                enableTextSelection: true,
-                autoScroll: true,
-                plugins: [
-                    {
-                        pluginId: 'preview',
-                        ptype: 'preview',
-                        bodyField: 'text',
-                        expanded: true
-                    }
-                ]
-            },
-
-            columns: [
-                {
-                    text: 'Author',
-                    dataIndex: 'authorName',
-                    renderer: function (value, p, record) {
-                        return Ext.String.format('<span class="author">{0}</span>', value || "|_|");
-                    },
-                    flex: 1
-                },
-                {
-                    text: 'Date',
-                    dataIndex: 'utcDateTime',
-                    renderer: function (utcDateTime) {
-                        var date  = Ext.Date.parse(utcDateTime,"c");
-                        var now = new Date();
-                        var d = Ext.Date.clearTime(now, true);
-                        var notime = Ext.Date.clearTime(date, true).getTime();
-
-                        if (notime === d.getTime()) {
-                            return Ext.Date.format(date, 'H:i');
-                        }
-                        return Ext.Date.format(date, 'Y/m/d H:i');
-                    },
-                    width: 200
-                }
-            ]
-        },
-        {
-            xtype: 'form',
-            layout: 'fit',
-            border: true,
+    initComponent: function (config) {
+        var me = this;
+        Ext.apply(me, {
             items: [
                 {
-                    xtype: 'htmleditor',
-                    reference: 'chat-textarea',
-                    flex: 1,
-                    enableLinks: true,
-                    enableLists: false,
-                    enableSourceEdit: false,
-                    enableAlignments: false,
-                    enableColors: true,
-                    enableFontSize: false,
-                    enableFormat: true
-                    //                    enableFont		 : false
-                }
-            ],
-            buttons: [
+
+                    xtype: 'grid',
+                    reference: 'chat-grid',
+                    flex: 4,
+                    border: false,
+                    hideHeaders: true,
+                    cls: 'feed-grid',
+                    bind: {
+                        store: '{messages}'
+                    },
+                    viewConfig: {
+                        stripeRows: false,
+                        enableTextSelection: true,
+                        autoScroll: true,
+                        plugins: [
+                            {
+                                pluginId: 'preview',
+                                ptype: 'preview',
+                                bodyField: 'text',
+                                expanded: true
+                            }
+                        ]
+                    },
+
+                    columns: [
+                        {
+                            text: me.columnAuthor,
+                            dataIndex: 'authorName',
+                            renderer: function (value, p, record) {
+                                return Ext.String.format('<span class="author">{0}</span>', value || "|_|");
+                            },
+                            flex: 1
+                        },
+                        {
+                            text: me.columnDate,
+                            dataIndex: 'utcDateTime',
+                            renderer: function (utcDateTime) {
+                                var date = Ext.Date.parse(utcDateTime, "c");
+                                var now = new Date();
+                                var d = Ext.Date.clearTime(now, true);
+                                var notime = Ext.Date.clearTime(date, true).getTime();
+
+                                if (notime === d.getTime()) {
+                                    return Ext.Date.format(date, 'H:i');
+                                }
+                                return Ext.Date.format(date, 'Y/m/d H:i');
+                            },
+                            width: 200
+                        }
+                    ]
+                },
                 {
-                    text: 'Send',
-                    width: 150,
-                    height: 30,
-                    listeners: {
-                        click: 'onSendClick'
-                    }
+                    xtype: 'form',
+                    layout: 'fit',
+                    border: true,
+                    items: [
+                        {
+                            xtype: 'htmleditor',
+                            reference: 'chat-textarea',
+                            flex: 1,
+                            enableLinks: true,
+                            enableLists: false,
+                            enableSourceEdit: false,
+                            enableAlignments: false,
+                            enableColors: true,
+                            enableFontSize: false,
+                            enableFormat: true
+                            //                    enableFont		 : false
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: me.buttonSend,
+                            width: 150,
+                            height: 30,
+                            listeners: {
+                                click: 'onSendClick'
+                            }
+                        }
+                    ]
+
                 }
             ]
+        });
 
-        }
-    ]
+        me.callParent(arguments);
+    }
 
 });
