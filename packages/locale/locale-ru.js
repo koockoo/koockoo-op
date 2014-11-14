@@ -38,6 +38,18 @@ koockoo.locale = koockoo.locale || {};
                 buttonSend: 'Отправить'
             });
 
+            Ext.define("Ext.locale.en.view.accept.Accept", {
+                override: "OP.view.accept.Accept",
+
+                formTitle: 'Начать Чат',
+                nameLabel: 'Имя',
+                locationLabel: 'Откуда',
+                envLabel: 'Утсройство',
+                messageLabel: 'Сообщение',
+                startButton: 'Начать',
+                skipButton: 'Пропустить'
+            });
+
             if (Ext.Date) {
                 Ext.Date.monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
 

@@ -17,12 +17,12 @@ Ext.define('OP.view.main.MainController', {
         this.fireViewEvent('logout');
     },
 
-    chatView: function (chatroom) {
-        var self = this;
+    chatView: function (tabSettings ) {
+        var chatroom = tabSettings.chatroom;
         var me = new OP.view.chat.Chat({
             autoShow: true,
             closable: true,
-            iconCls: 'iconTabOpen',
+            iconCls: tabSettings.iconCls,
             viewModel: {
                 data: {
                     chatroom: chatroom,
@@ -82,7 +82,7 @@ Ext.define('OP.view.main.MainController', {
     onAccepted: function (response, data) {
         var chatRoom = data.original;
         var tabs = this.lookupReference('main-tab-panel');
-        var tab = this.chatView(chatRoom);
+        var tab = this.chatView({chatroom:chatRoom, iconCls:'iconTabOpen'});
         var ps = Ext.getStore("Pending");
         var currentTab = tabs.getActiveTab();
 
@@ -195,7 +195,33 @@ Ext.define('OP.view.main.MainController', {
     },
 
     onLocaleChange: function() {
-        this.fireViewEvent('localeChange');
+        var tabSettings = [];
+        var tabs = this.lookupReference('main-tab-panel');
+        var i=0;
+        Ext.each(tabs.items.items, function (tab) {
+            if (tab.id == 'dashboard-tab') return;
+            var isActive = (tab == tabs.getActiveTab());
+            tabSettings[i++] = {
+                isActive: isActive,
+                chatroom: tab.viewModel.data.chatroom,
+                iconCls: tab.iconCls
+            };
+        });
+        this.fireViewEvent('localeChange', tabSettings);
+    },
+
+    restoreTabs: function(tabSettings) {
+        if (tabSettings == undefined) return;
+        var tabs = this.lookupReference('main-tab-panel');
+        for	(var i = 0; i < tabSettings.length; i++) {
+            var setting = tabSettings[i];
+            var tab = this.chatView(setting);
+            tabs.add(tab);
+            if (setting.isActive) {
+                tabs.setActiveTab(tab);
+                tab.controller.scroll();
+            }
+        }
     }
 
 });

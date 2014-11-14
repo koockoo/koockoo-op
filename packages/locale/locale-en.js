@@ -38,6 +38,18 @@ koockoo.locale = koockoo.locale || {};
                 buttonSend: 'Send'
             });
 
+            Ext.define("Ext.locale.en.view.accept.Accept", {
+                override: "OP.view.accept.Accept",
+
+                formTitle: 'Start Chat',
+                nameLabel: 'Name',
+                locationLabel: 'Location',
+                envLabel: 'Env',
+                messageLabel: 'Message',
+                startButton: 'Start',
+                skipButton: 'Skip'
+            });
+
             if (Ext.data && Ext.data.Types) {
                 Ext.data.Types.stripRe = /[\$,%]/g;
             }

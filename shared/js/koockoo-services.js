@@ -9,14 +9,14 @@
 var koockoo = koockoo || {};
 (function(){
 	koockoo.service = {};
-	
+
 	var self = {
 		localTry: 0,
 		localIps: ["http://192.168.1.148:8080", "http://192.168.1.71:8080"],
 		localUrl: "http://localhost:8080/koockoo-services",
 		balancer: "http://chatservicelocator.appspot.com/services/any",
 		baseUrl: "",
-		ready: false	
+		ready: false
 	};
 
 	koockoo.service.init = function (successCallback, failCallback) {
@@ -24,23 +24,23 @@ var koockoo = koockoo || {};
 		self.failCallback = failCallback;
 		self.lookupService();
 	};
-	
+
 	/** Invoke external call back if any when service is ready to consume*/
 	self.onServiceReady = function () {
 		if (self.successCallback) {
 			self.successCallback();
 		}
 	};
-	
+
 	self.onServiceFail = function () {
 		if (self.failCallback) {
 			self.failCallback();
 		}
 	};
-	/** 
+	/**
 	 * look up available service endpoint.
 	 * JS running from the file or localhost will connect to localhost only.
-	 * 
+	 *
 	 *  When running from the website always connect to public service.
 	 *  if PC and returned public service are in home network this will connect to hardcoded local ip.
 	 */
@@ -61,7 +61,7 @@ var koockoo = koockoo || {};
 			self.ajax(request);
 		}
 	};
-	
+
 	/** base url retrieved. now let's ping the service for availability */
 	self.onGetBaseUrlSuccess = function(response) {
         if (self.isExt()) {
@@ -99,10 +99,10 @@ var koockoo = koockoo || {};
 				failure: self.retryLocalUrl,
 				error: self.retryLocalUrl
 			};
-		
+
 		self.ajax(request);
 	};
-	
+
 	self.retryLocalUrl = function() {
 		if (self.localTry < self.localIps.length) {
 			self.baseUrl = self.localIps[self.localTry]+"/koockoo-services";
@@ -112,7 +112,7 @@ var koockoo = koockoo || {};
 			self.onGetBaseUrlFail();
 		}
 	};
-	
+
 	self.ajax = function(request){
         if (self.isExt()) {
             Ext.Ajax.request(request);
@@ -120,7 +120,7 @@ var koockoo = koockoo || {};
 			$.ajax(request);
 		}
 	};
-	
+
 	/** initialize services urls */
 	self.initUrls = function() {
 		var url = self.baseUrl+"/auth";
@@ -130,11 +130,11 @@ var koockoo = koockoo || {};
 			signGuest:    {url: url+"/signin/guest", type:'POST'},
 			signout:      {url: url+"/signout", type:'POST'}
 		};
-		
+
 		url = self.baseUrl+"/account";
 		koockoo.service.account = {
 			    ping:      {url: url+"/ping", type:'GET'},
-			    express:   {url: url+"/express", type:'POST'}, 
+			    express:   {url: url+"/express", type:'POST'},
 			    snippet:   {url: url+"/snippet", type:'POST'}
 		};
 
@@ -142,9 +142,10 @@ var koockoo = koockoo || {};
         koockoo.service.chatroom = {
             ping:       {url: url+"/ping", type:'GET'},
             pending:    {url: url+"/pending", type:'GET'},
-            open:    {url: url+"/open", type:'GET'},
-            close:    {url: url+"/close", type:'GET'},
-            accept:    {url: url+"/accept", type:'POST'}
+            active:     {url: url+"/active", type:'GET'},
+            open:       {url: url+"/open", type:'GET'},
+            close:      {url: url+"/close", type:'GET'},
+            accept:     {url: url+"/accept", type:'POST'}
         };
 
         url = self.baseUrl+"/message";
@@ -161,5 +162,5 @@ var koockoo = koockoo || {};
     self.isExt = function() {
         return typeof Ext !== 'undefined'
     };
-	
+
 })();

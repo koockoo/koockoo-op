@@ -23,7 +23,9 @@ Ext.define('OP.controller.Root', {
     initServices: function () {
         var self = this;
         if (koockoo != undefined && koockoo.service != undefined) {
-            koockoo.service.init(function(){self.onServiceInitialized(self)}, self.onServiceInitializedFail);
+            koockoo.service.init(function () {
+                self.onServiceInitialized(self)
+            }, self.onServiceInitializedFail);
         } else {
             Ext.Msg.alert('Service Unavailable', 'koockoo is not ready to serve');
         }
@@ -56,7 +58,6 @@ Ext.define('OP.controller.Root', {
     },
 
     showLogin: function () {
-        this.isMain = false;
         this.login = new OP.view.login.Login({
             autoShow: true,
             listeners: {
@@ -67,15 +68,14 @@ Ext.define('OP.controller.Root', {
         });
     },
 
-    showUI: function () {
-        this.isMain = true;
+    showUI: function (tabSettings) {
         var store = Ext.getStore('Auth');
         this.viewport = new OP.view.main.Main({
             autoShow: true,
             listeners: {
                 scope: this,
                 logout: 'onLogout',
-                localeChange: 'onLocaleChange'
+                localeChange: 'onLocaleChangeMain'
             },
             viewModel: {
                 data: {
@@ -86,11 +86,17 @@ Ext.define('OP.controller.Root', {
                 }
             }
         });
+        this.viewport.controller.restoreTabs(tabSettings);
     },
 
-    onLocaleChange: function() {
+    onLocaleChange: function () {
         console.log("reload login screen with new lang");
         this.reloadWithLocale();
+    },
+
+    onLocaleChangeMain: function (tabSettings) {
+        console.log("reload main screen with new lang");
+        this.reloadMainWithLocale(tabSettings);
     },
 
     reloadWithLocale: function () {
@@ -98,17 +104,29 @@ Ext.define('OP.controller.Root', {
         Ext.Loader.loadScript({url: url, onLoad: this.onLocaleLoadSuccess, scope: this});
     },
 
+
+    reloadMainWithLocale: function (tabSettings) {
+        var me = this;
+        var url = Ext.util.Format.format("packages/locale/locale-{0}.js", koockoo.userLocale);
+        Ext.Loader.loadScript({
+            url: url,
+            onLoad: function(){me.onLocaleMainLoadSuccess(tabSettings);},
+            scope: me
+        });
+    },
+
+    onLocaleMainLoadSuccess: function (tabSettings) {
+        koockoo.locale[koockoo.userLocale].reload();
+        this.viewport.destroy();
+        this.showUI(tabSettings);
+    },
+
     onLocaleLoadSuccess: function () {
         koockoo.locale[koockoo.userLocale].reload();
-        if (this.isMain) {
-            this.viewport.destroy();
-            this.showUI();
-        } else {
-            if (this.login) {
-                this.login.destroy();
-            }
-            this.showLogin();
+        if (this.login) {
+            this.login.destroy();
         }
+        this.showLogin();
 
     }
 });
