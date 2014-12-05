@@ -3,6 +3,10 @@
  */
 Ext.define('OP.LoginManager', {
 
+    requires: [
+        'Ext.util.LocalStorage'
+    ],
+
     config: {
         model: 'ResponseWrapper'
     },
@@ -41,6 +45,8 @@ Ext.define('OP.LoginManager', {
         var store =  Ext.getStore('Auth');
         store.loadRawData(response);
         if (resultSet.success) {
+            var localStorage = Ext.util.LocalStorage.get('opAuth');
+            localStorage.setItem('auth', 'stuff');
             Ext.callback(options.success, options.scope);
             return;
         }
