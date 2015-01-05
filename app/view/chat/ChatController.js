@@ -29,9 +29,7 @@ Ext.define('OP.view.chat.ChatController', {
         textarea.setValue("");
 
         // scroll to the bottom
-        var grid = this.lookupReference('chat-grid');
-        grid.getView().focusRow(ms.count() - 1);
-        grid.getEl().down('.x-grid-view').scroll('bottom', 200, true);
+        this.scroll();
         textarea.focus();
 
         // publish
