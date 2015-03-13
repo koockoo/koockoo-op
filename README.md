@@ -5,7 +5,7 @@
 - download GPL version of ExtJS5
 - projec src doe not kepp sencha service files
 Generate these files by by generating sample app, run command:   
-#### C:\work\programs\Sencha\ext-5.0.1\build.xml
+sencha -sdk /path/to/ext generate app OP /any/path/to/OP
 
 # OP
 This folder is primarily a container for the top-level pieces of the application.
