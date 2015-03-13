@@ -1,11 +1,14 @@
 
 # Project SetUp
+- download and install ruby runtime
 - download and install sencha cmd
 - set path variable pointing to folder with sencha.exe 
 - download GPL version of ExtJS5
-- projec src doe not kepp sencha service files
+- projec src does not kepp sencha service files
 Generate these files by by generating sample app, run command:   
 sencha -sdk /path/to/ext generate app OP /any/path/to/OP
+- go to /any/path/to/OP and copy all missing files and folders into koockoo-op/
+skip files and folders which are already exist
 
 # OP
 This folder is primarily a container for the top-level pieces of the application.
